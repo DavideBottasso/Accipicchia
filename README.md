@@ -1,3 +1,4 @@
 # Accipicchia
 Accipicchia 
-A game developed by five students.
+
+Web integration of the card game "Accipicchia"

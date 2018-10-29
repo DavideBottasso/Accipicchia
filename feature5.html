@@ -1,25 +1,34 @@
 <html>
-	<head>
+	<head>	
 		
 		<script type="application/javascript">
 		
 		/* variabili definite in PHP:
+			n_giocatori
+			giocatori (array associativo che utilizza il nome dei giocatori come chiave e salva il loro punteggio)
 			nome_giocatore_corrente
-			carta_giocata
-			carte_in_mano
+			carte_in_mano (array di booleani)
 			
-			carattere_separatore (costante) = ";"
 			servURL (costante)
+			
+			
 			-------------------------------------------------
 			STRUTTURA ARRAY PASSATO ALLA PAGINA ATTRAVERSO LA FUNZIONE invia_dati:
 			
 			params = array(
+				n_giocatori -> int n
+				
+				giocatori-> TUTTO SOTTO FORMA DI STRINGA DA SPLITTARE array(nomi_giocatori, punteggio_giocatori)
+					nomi_giocatori -> array(char* nomi giocatori)
+					punteggio_giocatori -> array(punteggio_giocatori)
 				nome_giocatore_corrente ->char* nome_giocatore_corrente
 				carta_cliccata -> int nCarta
-				carte_in_mano -> char* carte (è un array convertito com stringa per essere passato)
+				carte_in_mano -> array(carte)
+				carte_mazzo_centrale -> array di interi sotto forma di stringa
+				carta_centrale -> int nCarta  
 			)	
 		*/    
-
+		
 			function invia_dati(servURL, params, method) 
 			{
 				method = method || "post"; // il metodo POST è usato di default
@@ -43,43 +52,61 @@
 				var array = stringa.split(";");
 				return array;
 			}	
+
 			
+
 			function rimuoviElementoDaArray(arr, elemento)
 			{
 				var i = 0;
-				
+
 				/*cerco la posizione dell'elemento all'interno dell'array*/
+
 				while(arr[i]!=elemento)	
 				{
 					i= i+1;
 				}
-				
+
 				/*rimuovo l'elemento dall'array*/
 				arr.splice(i, 1);
-				
+
 				return arr;
+
 			}	
+
 			
+
 			
+
 			function avvia_prossimo_round(cartaCliccata)   /**questa funzione verrà richiamata scrivendo onclick="avvia_prossimo_round(this)"
+
 																	ATTENZIONE: l'attributo name degli oggetti html che rappresentano le carte deve corrispondere al numero della carta 
+
 																**/
 			{
+
 				/*copio i valori delle variabili ricevute tramite PHP in un vettore da inviare dinuovo al server per richiedere la prossima pagina*/
+
 				var params = new Array();
 				
-				params['nome_giocatore_corrente'] = <?php echo $nome_giocatore_corrente; ?>;
+				params['n_giocatori'] = <?php echo $_POST["n_giocatori]?>
+									  
+				varr					  
+									  
+				params['nome_giocatore_corrente'] = <?php echo $_POST['nome_giocatore_corrente'] ?>;
 				
 				/* ricavo il numero della carta selezionata*/
 				params['carta_cliccata'] = cartaCliccata.name; 
-				
+
 				/*aggiorno le carte che il giocatore corrente ha in mano*/
-				var array_carte_in_mano_turno_precedente = phpArrayToJs( <?php ehco $params['carte_in_mano']?> ); 
+
+				var array_carte_in_mano_turno_precedente = phpArrayToJs( <?php ehco $_POST['carte_in_mano']?> ); 
 				var array_carte_in_mano = rimuoviElementoDaArray(array_carte_in_mano_turno_precedente, cartaCliccata.name);
 				
+				/*trasformo l'array appena creato in una stringa*/
 				params['carte_in_mano'] = array_carte_in_mano.join( <?php echo $carattere_separatore?> );
-		
+
 				invia_dati(servURL, params, "post"); 
+
 			}
 			
 			
@@ -97,7 +124,9 @@
 	</head>
 	
 	<body>
-		<button id="carta" name=1 onclick="conferma(this)">carta</button>
+	
+	<?php echo '<p>premi il bottone</p>'?>	
+		<button id="carta" name="1" onclick="conferma(this)">carta</button>
 		<div id="div"></div>
 			
 	</body>

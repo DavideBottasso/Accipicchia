@@ -1,38 +1,22 @@
 <html>
 	<head>
-		<?php
-			$n_giocatori = 3;
-			$nomi_giocatori = array("giocatore1"=>1, "giocatore2"=>2, "giocatore3"=>3);
-			$punteggio_giocatori = array(1, 2, 3);
-			$nome_giocatore_corrente = "giocatore1"
-			$carte_in_mano = array(1, 2, 3,4 5, 6, 7, 8, 9, 10);
-			
-			$servURL = "www.google.it";
-		?>	
 		
 		<script type="application/javascript">
 		
 		/* variabili definite in PHP:
-			n_giocatori
-			giocatori (array associativo che utilizza il nome dei giocatori come chiave e salva il loro punteggio)
 			nome_giocatore_corrente
+			carta_giocata
 			carte_in_mano
 			
+			carattere_separatore (costante) = ";"
 			servURL (costante)
-			
-			
 			-------------------------------------------------
 			STRUTTURA ARRAY PASSATO ALLA PAGINA ATTRAVERSO LA FUNZIONE invia_dati:
 			
 			params = array(
-				n_giocatori -> int n
-				
-				giocatori-> array(nomi_giocatori, punteggio_giocatori)
-					nomi_giocatori -> array(char* nomi giocatori)
-					punteggio_giocatori -> array(punteggio_giocatori)
 				nome_giocatore_corrente ->char* nome_giocatore_corrente
 				carta_cliccata -> int nCarta
-				carte_in_mano -> array(carte)
+				carte_in_mano -> char* carte (è un array convertito com stringa per essere passato)
 			)	
 		*/    
 
@@ -54,44 +38,48 @@
 			}
 			
 			
+			function phpArrayToJs(stringa)
+			{
+				var array = stringa.split(";");
+				return array;
+			}	
+			
+			function rimuoviElementoDaArray(arr, elemento)
+			{
+				var i = 0;
+				
+				/*cerco la posizione dell'elemento all'interno dell'array*/
+				while(arr[i]!=elemento)	
+				{
+					i= i+1;
+				}
+				
+				/*rimuovo l'elemento dall'array*/
+				arr.splice(i, 1);
+				
+				return arr;
+			}	
+			
+			
 			function avvia_prossimo_round(cartaCliccata)   /**questa funzione verrà richiamata scrivendo onclick="avvia_prossimo_round(this)"
 																	ATTENZIONE: l'attributo name degli oggetti html che rappresentano le carte deve corrispondere al numero della carta 
 																**/
 			{
 				/*copio i valori delle variabili ricevute tramite PHP in un vettore da inviare dinuovo al server per richiedere la prossima pagina*/
 				var params = new Array();
-				params['n_giocatori'] = <?php echo $n_giocatori; ?>;
-				
-				giocatori = new array(<?php 
-										$keys = array(array_keys($giocatori));
-										echo "/'".$keys[0]."/'=>".$giocatori[$keys[0]];
-										for($i=1; $<count($keys); $i++)
-										{
-											$key = keys[i];
-											echo ", /'".$key."/'=>".$giocatori[$key]; 
-										}
-									?>);
-					
-				params['giocatori'] = giocatori;
 				
 				params['nome_giocatore_corrente'] = <?php echo $nome_giocatore_corrente; ?>;
 				
-				
 				/* ricavo il numero della carta selezionata*/
-				params['carta_cliccata'] = cartaCliccata.name;
+				params['carta_cliccata'] = cartaCliccata.name; 
 				
-				params['carte_in_mano'] = new array();
-				params['carte_in_mano'] = new array(<?php 
-														echo $carte_in_mano[0];
-														for($i=1; $i<count($carte_in_mano); i++)
-														{
-															echo ",".carte_in_mano[$i];
-														}
-													?>);
+				/*aggiorno le carte che il giocatore corrente ha in mano*/
+				var array_carte_in_mano_turno_precedente = phpArrayToJs( <?php ehco $params['carte_in_mano']?> ); 
+				var array_carte_in_mano = rimuoviElementoDaArray(array_carte_in_mano_turno_precedente, cartaCliccata.name);
 				
-				var servURL = <?php echo servURL?>;
-				
-				invia_dati(servURL, params, post); 
+				params['carte_in_mano'] = array_carte_in_mano.join( <?php echo $carattere_separatore?> );
+		
+				invia_dati(servURL, params, "post"); 
 			}
 			
 			

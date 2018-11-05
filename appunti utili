@@ -1,0 +1,25 @@
+APRIRE UN DB SQLITE DA PHP: 
+
+$sq = sqlite_open(“miodb.db”, 0666, $sqlite_error); 
+
+Il primo parametro è il nome del file che conterrà i nostri dati (se non esiste verrà creato), 
+il secondo indica i permessi da associare al database (attualmente il parametro viene ignorato 
+da SQLite anche se l’impostazione consigliata è 0666) mentre il terzo conterrà eventualmente una 
+stringa con il messaggio di errore eventualmente riscontrato durante l’apertura della fonte di dati. 
+In caso sia andato tutto per il verso giusto, $sq conterrà la risorsa che ci permetterà di accedere 
+al database miodb.db, altrimenti assumerà un valore nullo. Per questo motivo è sempre buona prassi 
+controllare il valore restituito da sqlite_open prima di proseguire. 
+
+----------------------------------------------------------------------------------------------------------------------
+INCLUDERE UNA LIBRERIA IN PHP
+
+All'interno di tutti i singoli file preposti ad operare sul DB sarà sufficiente includere il file appena visto, in questo modo:
+include "dati-mysql.php";
+oppure con
+require "dati-mysql.php";
+
+I due comandi include e require producono il medesimo risultato; l'unica differenza consiste nella gestione di eventuali errori: 
+nel caso il file da includere non si trovato include() genererà un warning mentre require() un fatal error (bloccando, di fatto, 
+l'esecuzione dello script).
+
+------------------------------------------------------------------------------------------------------------------------------

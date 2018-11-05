@@ -1,0 +1,10 @@
+NOME DB: "partita_accipicchia.db"
+
+tutorial sqlite: https://www.html.it/pag/16699/utilizzare-sqlite/
+
+DUE TABELLE
+
+  1.    giocatori
+  2.    carte_evento
+  
+  1.    GIOCATORI

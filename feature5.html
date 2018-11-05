@@ -10,6 +10,7 @@
 			carte_in_mano (array di booleani)
 			
 			servURL (costante)
+			carattereSeparatore (costante) -> utilizzato per separare i vari campi di un array quando convertito in stringa 
 			
 			
 			-------------------------------------------------
@@ -88,9 +89,11 @@
 
 				var params = new Array();
 				
-				params['n_giocatori'] = <?php echo $_POST["n_giocatori]?>
+				params['n_giocatori'] = <?php echo $_POST["n_giocatori"]?>
 									  
-				varr					  
+				var array_giocatori_toString = <?php echo $_POST["giocatori"]?> 	/*copio direttamente la stringa dell'array joinato, senza splittarlo
+												perchè non è necessario modficarlo*/
+				params['giocatori'] = array_giocatori_toString;	
 									  
 				params['nome_giocatore_corrente'] = <?php echo $_POST['nome_giocatore_corrente'] ?>;
 				
@@ -125,10 +128,8 @@
 	
 	<body>
 	
-	<?php echo '<p>premi il bottone</p>'?>	
 		<button id="carta" name="1" onclick="conferma(this)">carta</button>
-		<div id="div"></div>
-			
+		<div id="div"></div>	
 	</body>
 		
 	

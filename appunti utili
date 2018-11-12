@@ -23,3 +23,9 @@ nel caso il file da includere non si trovato include() genererà un warning ment
 l'esecuzione dello script).
 
 ------------------------------------------------------------------------------------------------------------------------------
+DEFINIRE UNA COSTANTE IN PHP:
+
+define("NOME_COSTANTE", valore_costante);
+ehco defined("NOME_COSTANTE");
+
+---------------------------------------------------------------------------------------------------------------------------------

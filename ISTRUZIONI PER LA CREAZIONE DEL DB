@@ -7,4 +7,6 @@ DUE TABELLE
   1.    giocatori
   2.    carte_evento
   
-  1.    GIOCATORI
+  1.    GIOCATORI( PK nome_giocatore, n_round (serve per controllare che tutti i giocatori siano allineati allo stesso round),
+                carta_giocata, carte_in_mano (è una stringa di numeri intervallati da spazio), cod_carta_evento)
+  2.    CARTE_EVENTO( PK cod_carta_evento, punteggio, immagine (se si riesce, includere il file immagine nel DB))

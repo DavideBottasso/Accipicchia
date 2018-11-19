@@ -1,3 +1,4 @@
+
 APRIRE UN DB SQLITE DA PHP: 
 
 $sq = sqlite_open(“miodb.db”, 0666, $sqlite_error); 
@@ -29,3 +30,24 @@ define("NOME_COSTANTE", valore_costante);
 ehco defined("NOME_COSTANTE");
 
 ---------------------------------------------------------------------------------------------------------------------------------
+CREARE UN SEMAFORO IN PHP:
+resource sem_get ( int $key [, int $max_acquire = 1 [, int $perm = 0666 [, int $auto_release = 1 ]]] )
+
+sem_get() returns an id that can be used to access the System V semaphore with the given key. 
+A second call to sem_get() for the same key will return a different semaphore identifier, but 
+both identifiers access the same underlying semaphore.
+RETURN: true se è andato tutto bene, false se c'è stato un errore.
+
+----------------------------------------------------------------------------------------------------------------------------------
+LOCKARE UN SEMAFORO IN PHP:
+bool sem_acquire ( resource $sem_identifier [, bool $nowait = FALSE ] );
+
+RETURN: true se è andato tutto bene
+
+----------------------------------------------------------------------------------------------------------------------------------
+UNLOCKARE UN SEMAFORO IN PHP:
+
+bool sem_release ( resource $sem_identifier );
+
+RETURN: true se è andato tutto bene 
+-----------------------------------------------------------------------------------------------------------------------------------

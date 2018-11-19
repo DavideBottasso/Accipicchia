@@ -68,7 +68,7 @@
 			  		FROM 	giocatori" ,
 					"impossibile aprire il DB -4");
 		
-		while($n_round_min != $n_round)
+)		while($n_round_min != $n_round)
 		{
 			$n_round_min = sqlite_quesry( $db, "	SELECT 	MIN(n_round)
 			  		FROM 	giocatori" ,
@@ -87,11 +87,54 @@
 		#controllo se la carta evento che si trova al centro del tavolo in questo round ha un punteggio positivo 
 		#o negativo
 		
+		$giocatore_punteggio_da_aggiornare;
+		
 		if($carta_evento > 0)
 		{
-			cerca_giocatore_carta_giocata_maggiore
+			$giocatore_punteggio_da_aggiornare = cerca_giocatore_carta_giocata_maggioreMinore($db, "MAX");
+		}else
+		{
+			$giocatore_punteggio_da_aggiornare = cerca_giocatore_carta_giocata_minoreMinore($db, "MIN");
+		}	
+		
+		#query che aggiorna il punteggio del giocatore trovato
+		sqlite_query($db, "	UPDATE 	giocatori
+					SET     punteggio = punteggio +.$carta_evento.
+					WHERE 	nome_giocatore = '".$giocatore_punteggio_da_aggiornare."' ", "impossibile aprire il DB -5");
 	}
-	
+
+	#CERCA_GIOCATORE_CARTA_GIOCATA_MAGGIOREMINORE()
+	#questa funzione ha due diversi funzionamenti a seconda del valore del parametro $maxMin.
+	# - se il valore è "MAX" la funzione restituisce il nome del giocatore che ha giocato la carta con valore massimo
+	# - se "MIN" il nome del giocatore che ha giocato la carta con valore minimo
+	#in entrambi i casi non vengono considerati le coppie di giocatori che hanno giocato la stessa carta.
+	function cerca_giocatore_carta_giocata_maggioreMinore($db, $maxMin)
+	{
+		$giocatori_da_rimuovere = " ";
+		$giocatore = sqlite_query($db, " 	SELECT 	nome_giocatore
+							FROM 	giocatori
+							WHERE 	punteggio = (	SELECT 	".$maxMin."(punteggio) 
+										FROM 	giocatori
+									    )", "impossibile aprire il DB -6");
+		
+		#ciclo fino a quando la query non restituisce un solo giocatore (se ne restituisce due è perchè ci sono 
+		#casi di giocatori che hanno giocato una carta con uguale punteggio).
+		#Gestisco il caso descritto precedentemente mantenendo un elenco di giocatori da rimuovere dalla query
+		#che viene aggiornato ogni volta che il numero degli elementi restituito dalla query è diverso da 1.
+		while(count($giocatore)!=1)
+		{
+			$giocatore = join(costant("CARATTERE_SEPARATORE"), $giocatore);
+			$giocatori_da_rimuovere = $giocatori_da_rimuovere.",".$giocatore;
+			$giocatore = sqlite_query($db, " SELECT nome_giocatore
+							FROM 	giocatori
+							WHERE 	punteggio = (	SELECT 	".$maxMin."(punteggio) 
+										FROM 	giocatori
+									    )
+							AND 	nome_giocatore NOT IN(".$giocatori_da_rimuovere.")", "impossibile aprire il DB -7");
+		}
+		
+		return $giocatore;
+	}
 	
 	#--------------------------------------------------------------------------------------
 	# MAIN
@@ -114,7 +157,7 @@
 		{		
 			#controllo che non ci sia un altro processo su questo server che stia eseguendo queste istruzioni
 			$sem_id = sem_get(costant("KEY_IPC_SEM_MAIN"));
-			if(sem_acquire($sem_id, true)
+			if(sem_acquire($sem_id, true))
 			{
 				#SE L'ITERAZIONE HA RESTITUITO VERO 
 				#questo processo sarà il "processo amministratore" ovvero l'unico ad eseguire le operazioni
@@ -124,6 +167,8 @@
 				attesa_altri_giocatori($db, $n_round);
 				
 				aggiorna_punteggi($db);
+				
+				sem_relase($sem_id);
 			}	
 			
 						

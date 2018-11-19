@@ -1,4 +1,3 @@
-
 APRIRE UN DB SQLITE DA PHP: 
 
 $sq = sqlite_open(“miodb.db”, 0666, $sqlite_error); 
@@ -50,4 +49,10 @@ UNLOCKARE UN SEMAFORO IN PHP:
 bool sem_release ( resource $sem_identifier );
 
 RETURN: true se è andato tutto bene 
+
 -----------------------------------------------------------------------------------------------------------------------------------
+CONTARE GLI ELEMENTI DI UN ARRAY IN PHP:
+
+int count ( mixed $var [, int $mode ] );
+
+------------------------------------------------------------------------------------------------------------------------------------

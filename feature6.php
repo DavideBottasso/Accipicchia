@@ -48,7 +48,7 @@
 			sqlite_query($db, "	UPDATE giocatori
 						SET 	carta_giocata = ".$carta_giocata.", n_round = n_round +1
 						WHERE 	nome_giocatore = '".$nome_giocatore_corrente."'" , 
-						"impossibile aggiornare il DB");
+						"impossibile aggiornare il DB -3");
 			$ret = false;
 		}else
 			$ret = true;
@@ -66,18 +66,32 @@
 	{
 		$n_round_min = sqlite_quesry( $db, "	SELECT 	MIN(n_round)
 			  		FROM 	giocatori" ,
-					"impossibile aprire il DB -3");
+					"impossibile aprire il DB -4");
 		
 		while($n_round_min != $n_round)
 		{
 			$n_round_min = sqlite_quesry( $db, "	SELECT 	MIN(n_round)
 			  		FROM 	giocatori" ,
-					"impossibile aprire il DB -3");
+					"impossibile aprire il DB -5");
 		}	
 	}
 
-	
 
+	#AGGIORNA_PUNTEGGI()
+	#questa funzione è eseguita solo dal processo "amministratore" secondo le regole dettate dal semaforo
+	#(che assegna questa funzione al primo processo che fa lock sul semaforo).
+	#RETURN: nessuno perchè i nuovi punteggi dei vari giocatori vengono scritti direttamente nel db sovrascrivendo
+	#quelli precedenti
+	function aggiorna_punteggi($db, $carta_evento)
+	{	
+		#controllo se la carta evento che si trova al centro del tavolo in questo round ha un punteggio positivo 
+		#o negativo
+		
+		if($carta_evento > 0)
+		{
+			cerca_giocatore_carta_giocata_maggiore
+	}
+	
 	
 	#--------------------------------------------------------------------------------------
 	# MAIN
@@ -100,9 +114,19 @@
 		{		
 			#controllo che non ci sia un altro processo su questo server che stia eseguendo queste istruzioni
 			$sem_id = sem_get(costant("KEY_IPC_SEM_MAIN"));
+			if(sem_acquire($sem_id, true)
+			{
+				#SE L'ITERAZIONE HA RESTITUITO VERO 
+				#questo processo sarà il "processo amministratore" ovvero l'unico ad eseguire le operazioni
+				#di aggiornamento dei punteggi dei giocatori
+				
+				#attendo che tutti i giocatori siano allineati allo stesso round 
+				attesa_altri_giocatori($db, $n_round);
+				
+				aggiorna_punteggi($db);
+			}	
 			
-			#attendo che tutti i giocatori siano allineati allo stesso round 
-			attesa_altri_giocatori($db, $n_round);			
+						
 		}else
 		{
 			echo "i punteggi della partita sono stati compromessi";

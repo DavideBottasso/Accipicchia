@@ -60,3 +60,7 @@ RICAVARE IL VALORE DI UNA COSTANTE IN PHP:
 mixed constant ( string $name )
 
 --------------------------------------------------------------------------------------------------------------------------------
+TRASFORMARE UN ARRAY IN UNA STRINGA CON UNA JOIN IN PHP:
+join("[carattere separatore]", $array);
+
+---------------------------------------------------------------------------------------------------------------------------------

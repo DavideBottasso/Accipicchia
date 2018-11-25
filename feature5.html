@@ -84,11 +84,7 @@
 				/*copio i valori delle variabili ricevute tramite PHP in un vettore da inviare dinuovo al server per richiedere la prossima pagina*/
 
 				var params = new Array();
-									  
-				var array_giocatori_toString = <?php echo $_POST["giocatori"]?> 	/*copio direttamente la stringa dell'array joinato, senza splittarlo
-												perchè non è necessario modficarlo*/
-				params['giocatori'] = array_giocatori_toString;	
-									  
+								  
 				params['nome_giocatore_corrente'] = <?php echo $_POST['nome_giocatore_corrente'] ?>;
 				
 				/* ricavo il numero della carta selezionata*/

@@ -139,7 +139,6 @@
 	#--------------------------------------------------------------------------------------
 	# MAIN
 
-	#PASSO IL NOME DEL GIOCATORE E LA CARTA GIOCATA AL DB, POI ASPETTO 
 	require "sqlite3.dll";
 	$db = sqlite_open("partita_accipicchia.db, 066, "impossibile aprire il DB");   #apro il db
 

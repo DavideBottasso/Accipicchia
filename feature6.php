@@ -21,7 +21,9 @@
 		#params = array(
 			#nome_giocatore_corrente ->char* nome_giocatore_corrente
 			#carta_cliccata -> int nCarta
-			#carta_evento -> int nCarta  
+			#carta_evento -> int nCarta
+			#n_round -> int 
+			#carte_in_mano -> char* elenco di numeri separato dal defined(CARATTERE SEPARATORE)
 		#	)	
 	
 	#DEFINE

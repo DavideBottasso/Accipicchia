@@ -33,7 +33,7 @@
 
 	#--------------------------------------------------------------------------------------------------------------
 	# FUNZIONI
-	function aggiorna_n_round($db, $nome_giocatore_corrente, $n_round)
+	function aggiorna_n_round_e_carta($db, $nome_giocatore_corrente, $n_round)
 	{
 		#prima di aggiornare il DB controllo che non ci siano errori di conteggio nel numero del round.
 		#eseguo questo controllo confrontando il numero round passato dal clent del giocatore con il numero
@@ -154,7 +154,7 @@
 		
 		#prima di aggiornare il DB controllo che non ci siano errori di conteggio nel numero del round
 		#se la funzione sotto ritorna vero, ci sono errori
-		if(!aggiorna_n_round($db, $nome_giocatore, $n_round))	
+		if(!aggiorna_n_round_e_carta($db, $nome_giocatore, $n_round))	
 		{	
 			#attendo che tutti i giocatori siano allineati allo stesso round 
 			attesa_altri_giocatori($db, $n_round);

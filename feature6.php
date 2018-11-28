@@ -155,7 +155,10 @@
 		#prima di aggiornare il DB controllo che non ci siano errori di conteggio nel numero del round
 		#se la funzione sotto ritorna vero, ci sono errori
 		if(!aggiorna_n_round($db, $nome_giocatore, $n_round))	
-		{		
+		{	
+			#attendo che tutti i giocatori siano allineati allo stesso round 
+			attesa_altri_giocatori($db, $n_round);
+			
 			#controllo che non ci sia un altro processo su questo server che stia eseguendo queste istruzioni
 			$sem_id = sem_get(costant("KEY_IPC_SEM_MAIN"));
 			if(sem_acquire($sem_id, true))
@@ -163,9 +166,6 @@
 				#SE L'ITERAZIONE HA RESTITUITO VERO 
 				#questo processo sarà il "processo amministratore" ovvero l'unico ad eseguire le operazioni
 				#di aggiornamento dei punteggi dei giocatori
-				
-				#attendo che tutti i giocatori siano allineati allo stesso round 
-				attesa_altri_giocatori($db, $n_round);
 				
 				aggiorna_punteggi($db);
 				

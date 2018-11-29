@@ -115,9 +115,9 @@
 		$giocatori_da_rimuovere = " ";
 		$giocatore = sqlite_query($db, " 	SELECT 	nome_giocatore
 							FROM 	giocatori
-							WHERE 	punteggio = (	SELECT 	".$maxMin."(punteggio) 
-										FROM 	giocatori
-									    )", "impossibile aprire il DB -6");
+							WHERE 	carta_giocata = (	SELECT 	".$maxMin."(carta_giocata) 
+											FROM 	giocatori
+									   	 )", "impossibile aprire il DB -6");
 		
 		#ciclo fino a quando la query non restituisce un solo giocatore (se ne restituisce due è perchè ci sono 
 		#casi di giocatori che hanno giocato una carta con uguale punteggio).

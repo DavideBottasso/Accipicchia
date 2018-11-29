@@ -43,7 +43,7 @@
 							WHERE 	nome_giocatore = '".$nome_giocatore."'" ,
 					     		"impossibile aprire il db -2");
 					     );
-		if($n_round_prec == $n_round)
+		if($n_round_prec == ($n_round -1))
 		{
 			#se non ci sono stati errori posso passare all'aggiornamento del DB
 			#i campi che vanno aggiornati sono il numero di round, la carta appena giocata e le carte ancora disponibili

@@ -84,12 +84,19 @@
 	#(che assegna questa funzione al primo processo che fa lock sul semaforo).
 	#RETURN: nessuno perchè i nuovi punteggi dei vari giocatori vengono scritti direttamente nel db sovrascrivendo
 	#quelli precedenti
-	function aggiorna_punteggi($db, $carta_evento)
+	function aggiorna_punteggi($db, $n_round)
 	{	
 		#controllo se la carta evento che si trova al centro del tavolo in questo round ha un punteggio positivo 
 		#o negativo
 		
 		$giocatore_punteggio_da_aggiornare;
+		
+		#prendo la carta evento che si trovava "al centro del tavolo" in questo round
+		$carta_evento = sqlite_query($db, "	SELECT punteggio_carta
+							FROM 	carte_evento
+							WHERE 	n_round = ". $n_round,
+					     		"errore Database -7");
+		
 		
 		if($carta_evento > 0)
 		{
@@ -167,7 +174,7 @@
 				#questo processo sarà il "processo amministratore" ovvero l'unico ad eseguire le operazioni
 				#di aggiornamento dei punteggi dei giocatori
 				
-				aggiorna_punteggi($db);
+				aggiorna_punteggi($db, n_round);
 				
 				sem_relase($sem_id);
 			}	

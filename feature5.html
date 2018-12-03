@@ -41,7 +41,7 @@
 			}
 			
 			
-			function phpArrayToJs(stringa)
+			function phpToJsArray(stringa)
 			{
 				var array = stringa.split(";");
 				return array;
@@ -86,7 +86,7 @@
 
 				/*aggiorno le carte che il giocatore corrente ha in mano*/
 
-				var array_carte_in_mano_turno_precedente = phpArrayToJs( <?php ehco $_POST['carte_in_mano']?> ); 
+				var array_carte_in_mano_turno_precedente = phpToJsArray( <?php ehco $_POST['carte_in_mano']?> ); 
 				var array_carte_in_mano = rimuoviElementoDaArray(array_carte_in_mano_turno_precedente, cartaCliccata.name);
 				
 				/*trasformo l'array appena creato in una stringa*/
